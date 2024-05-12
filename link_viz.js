@@ -4,7 +4,7 @@ import RoomSeen from './room_seen.js';
 // Create the application helper and add its render target to the page
 const app = new PIXI.Application();
 
-globalThis.__PIXI_APP__ = app;
+//globalThis.__PIXI_APP__ = app;
 await app.init({ resizeTo: window, eventMode: "static", eventFeatures: {
     wheel: true,
     mouse: true,
@@ -132,7 +132,7 @@ function addText(app, text, x, y, style){
 
 function initWebsocket(){
 
-    const ws = new WebSocket("ws://arcade-numeric.bnr.la:3344/receive");
+    const ws = new WebSocket("wss://arcade-numeric.bnr.la:3344/receive");
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log(data);
