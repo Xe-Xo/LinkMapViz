@@ -1,99 +1,70 @@
-const express = require('express');
+var https = require('https');
+var fs = require('fs');
 
-const fs = require('fs');
-const https = require('https');
-const WebSocketServer = require('ws').Server;
-const WebSocket = require('ws');
+var express = require('express');
+var expressWs = require('express-ws');
 
-
-console.log("Starting server");
-
-const cts = {
-  cert: fs.readFileSync("/etc/letsencrypt/live/arcade-numeric.bnr.la/fullchain.pem"),
-  key: fs.readFileSync("/etc/letsencrypt/live/arcade-numeric.bnr.la/privkey.pem")
-}
-
-
-
-console.log("Certificates loaded");
-
-const app = express();
-const server = https.createServer(cts)
-//expressWS(app, server);
-
-const wss = new WebSocketServer({ server });
-
+var options = {
+    cert: fs.readFileSync("/etc/letsencrypt/live/arcade-numeric.bnr.la/fullchain.pem"),
+    key: fs.readFileSync("/etc/letsencrypt/live/arcade-numeric.bnr.la/privkey.pem")
+};
 
 const broadcasters = new Set();
 const receivers = new Set();
 
+var app = express();
+var server = https.createServer(options, app);
+var expressWs = expressWs(app, server);
 
-wss.on('connection', function connection(ws) {
-  ws.on('error', console.error);
+app.use(function (req, res, next) {
+  console.log('middleware');
+  req.testing = 'testing';
+  return next();
+});
 
-  ws.on('message', function message(msg) {
-    console.log(msg.toString());
+app.get('/', function(req, res, next){
+  console.log('get route', req.testing);
+  res.end();
+});
+
+app.ws('/', function(ws, req) {
+  ws.on('message', function(msg) {
+    console.log(msg);
+  });
+  console.log('socket', req.testing);
+});
+
+app.ws('/broadcast', function(ws, req){
+  broadcasters.add(ws);
+  console.log('A new broadcaster connected.');
+
+  ws.on('message', function(message) {
+    console.log('Broadcasting: %s', message);
+    receivers.forEach(receiver => {
+      //if (receiver.readyState === WebSocket.OPEN) {
+      receiver.send(message);
+      //}
+    });
+  });
+
+  ws.on('close', () => {
+    broadcasters.delete(ws);
+    console.log('Broadcaster disconnected');
+  });
+
+})
+
+app.ws('/receive', function(ws, req) {
+  receivers.add(ws);
+  console.log('A new receiver connected.');
+  receiver.send("Hello");
+
+  ws.on('close', () => {
+    receivers.delete(ws);
+    console.log('Receiver disconnected');
   });
 });
 
-server.listen(function listening() {
-  //
-  // If the `rejectUnauthorized` option is not `false`, the server certificate
-  // is verified against a list of well-known CAs. An 'error' event is emitted
-  // if verification fails.
-  //
-  // The certificate used in this example is self-signed so `rejectUnauthorized`
-  // is set to `false`.
-  //
-  const ws = new WebSocket(`wss://localhost:${server.address({port: 3344}).port}`, {
-    rejectUnauthorized: false
-  });
 
-  ws.on('error', console.error);
 
-  ws.on('open', function open() {
-    ws.send('All glory to WebSockets!');
-  });
-
-  ws.on('message', function message(data) {
-    console.log(`Roundtrip time: ${Date.now() - data} ms`);
-
-    ws.close();
-    server.close();
-  });
-
-});
-
-// app.ws('/broadcast', function(ws, req) {
-//   broadcasters.add(ws);
-//   console.log('A new broadcaster connected.');
-
-//   ws.on('message', function(message) {
-//     console.log('Broadcasting: %s', message);
-//     receivers.forEach(receiver => {
-//       //if (receiver.readyState === WebSocket.OPEN) {
-//       receiver.send(message);
-//       //}
-//     });
-//   });
-
-//   ws.on('close', () => {
-//     broadcasters.delete(ws);
-//     console.log('Broadcaster disconnected');
-//   });
-// });
-
-// app.ws('/receive', function(ws, req) {
-//   receivers.add(ws);
-//   console.log('A new receiver connected.');
-
-//   ws.on('close', () => {
-//     receivers.delete(ws);
-//     console.log('Receiver disconnected');
-//   });
-// });
-
-// const port = 3344;
-// app.listen(port, () => {
-//     console.log(`Server started on http://localhost:${port}`);
-// });
+server.listen(3344)
