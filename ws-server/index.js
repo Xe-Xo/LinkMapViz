@@ -3,8 +3,14 @@ const expressWS = require('express-ws');
 
 console.log("Starting server");
 
+const cts = {
+  cert: fs.readFileSync("/etc/letsencrypt/live/arcade-numeric.bnr.la/fullchain.pem"),
+  key: fs.readFileSync("/etc/letsencrypt/live/arcade-numeric.bnr.la/privkey.pem")
+}
+
 const app = express();
-expressWS(app);
+https.createServer(cts, app).listen(443)
+expressWS(app, server);
 
 const broadcasters = new Set();
 const receivers = new Set();
