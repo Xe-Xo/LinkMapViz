@@ -1,5 +1,5 @@
 # LinkMapViz
- Visualiser for agents learning to play Link Awakening DX
+ Visualiser for agents learning to play Link Awakening DX on GameBoy Color
 🔴[View Here](https://xe-xo.github.io/LinkMapViz)
 
 ## Information Agents Provide
@@ -10,6 +10,7 @@
 
 ### Interested in more projects like this one?
 If you like this project then you should check out the following:
+
 [Pokemon Red Viz](https://github.com/pwhiddy/pokerl-map-viz/)
 
 ## Join the discord server
