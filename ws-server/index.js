@@ -45,7 +45,7 @@ server.listen(function listening() {
   // The certificate used in this example is self-signed so `rejectUnauthorized`
   // is set to `false`.
   //
-  const ws = new WebSocket(`wss://localhost:${server.address().port}`, {
+  const ws = new WebSocket(`wss://localhost:${server.address({port: 3344}).port}`, {
     rejectUnauthorized: false
   });
 
