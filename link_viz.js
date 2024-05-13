@@ -132,7 +132,7 @@ function addText(app, text, x, y, style){
 
 function initWebsocket(){
 
-    const ws = new WebSocket("ws://arcade-numeric.bnr.la:3344/receive");
+    const ws = new WebSocket("wss://arcade-numeric.bnr.la:3344/receive");
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log(data);
