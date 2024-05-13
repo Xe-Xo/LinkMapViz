@@ -11,7 +11,7 @@ const cts = {
 }
 
 const app = express();
-https.createServer(cts, app).listen(443)
+const server = https.createServer(cts, app).listen(443)
 expressWS(app, server);
 
 const broadcasters = new Set();
