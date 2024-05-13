@@ -54,6 +54,14 @@ server.listen(function listening() {
   ws.on('open', function open() {
     ws.send('All glory to WebSockets!');
   });
+
+  ws.on('message', function message(data) {
+    console.log(`Roundtrip time: ${Date.now() - data} ms`);
+
+    ws.close();
+    server.close();
+  });
+
 });
 
 // app.ws('/broadcast', function(ws, req) {
