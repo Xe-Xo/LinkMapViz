@@ -1,5 +1,6 @@
 const express = require('express');
 const expressWS = require('express-ws');
+const fs = require('fs');
 
 console.log("Starting server");
 
