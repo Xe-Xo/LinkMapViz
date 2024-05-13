@@ -10,8 +10,10 @@ const cts = {
   key: fs.readFileSync("/etc/letsencrypt/live/arcade-numeric.bnr.la/privkey.pem")
 }
 
+console.log("Certificates loaded");
+
 const app = express();
-const server = https.createServer(cts, app).listen(443)
+const server = https.createServer(cts)
 expressWS(app, server);
 
 const broadcasters = new Set();
