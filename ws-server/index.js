@@ -3,6 +3,7 @@ const express = require('express');
 const fs = require('fs');
 const https = require('https');
 const WebSocketServer = require('ws').Server;
+const WebSocket = require('ws');
 
 
 console.log("Starting server");
