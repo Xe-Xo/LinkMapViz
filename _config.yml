@@ -1,0 +1,2 @@
+exclude: []
+keep_files: ["node_modules_pixi_js_lib_environment-webworker_webworkerAll_mjs.index.js", "node_modules_pixi_js_lib_environment-browser_browserAll_mjs.index.js"]
