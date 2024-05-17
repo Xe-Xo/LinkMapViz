@@ -82,12 +82,14 @@ function refreshNotifications(){
         return;
     }
     else {
-        const element = data_stream.shift();
-        map_container.addPosSeenRect(element.x, element.y, element.z, element.notable);
-        if (element.notable != ""){
-            sidepanel_container.addNewNotification(element.notable);
-        }
-    
+        const elements = data_stream.splice(0, Math.min(data_stream.length,Math.max(data_stream.length / 6000, 1)));
+        elements.forEach(element => {
+            map_container.addPosSeenRect(element.x, element.y, element.z, element.notable);
+            if (element.notable != ""){
+                sidepanel_container.addNewNotification(element.notable);
+            }
+        });
+        console.log(data_stream.length)
     }
 
 

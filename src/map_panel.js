@@ -47,7 +47,24 @@ class PosSeen{
 
     updateSeen(notable) {
         this.lastseen = Date.now();
-        this.notable = notable
+        if (notable != ''){
+            this.notable = notable
+
+            if (this.sprite == null){
+                this.sprite = Sprite.from(this.notable);
+                this.sprite.setSize(16,16)
+                this.container.addChild(this.sprite)
+            } else {
+                this.container.removeChild(this.sprite);
+                this.sprite = Sprite.from(this.notable);
+                this.sprite.setSize(16,16)
+                this.container.addChild(this.sprite)
+            }
+
+        }
+
+
+
     }
 
     check(){
