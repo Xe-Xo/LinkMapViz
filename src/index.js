@@ -104,8 +104,8 @@ function initWebsocket(){
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
 
-        if ("data" in data){
-            const posData = data.data;
+        if ("pos_data" in data){
+            const posData = data.pos_data;
             posData.forEach(element => {
                 data_stream.push(element)
             });
