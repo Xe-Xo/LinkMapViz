@@ -125,4 +125,16 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+<<<<<<< Updated upstream
 node_modules
+=======
+
+# hide parcel cache
+
+
+node_modules
+
+/lib
+/.parcel-cache/
+/dist/
+>>>>>>> Stashed changes
