@@ -155,10 +155,43 @@ function refreshWebsocket(){
     app.stage.on('mouseup', (e) => {map_container.mouseUp(e)});
     app.stage.on('mouseupoutside', (e) => {map_container.mouseUp(e)});
     app.stage.on('mousemove', (e) => {map_container.mouseMove(e)});
-    app.stage.on('touchstart', (e) => {map_container.touchStart(e)});
-    app.stage.on('touchend', (e) => {map_container.touchEnd(e)});
-    app.stage.on('touchendoutside', (e) => {map_container.touchEnd(e)});
-    app.stage.on('touchmove', (e) => {map_container.touchMove(e)});
+    app.stage.on('touchstart', (e) => {
+        
+        e.preventDefault();
+        if (e.touches !== undefined && e.touches.length == 1){
+            map_container.touchStart(e);
+        } else {
+            map_container.mouseDown(e);
+        };
+    });
+        
+    app.stage.on('touchend', (e) => {
+        
+        
+        e.preventDefault();
+        if (e.touches !== undefined && e.touches.length == 1){
+            map_container.touchEnd(e);
+        } else {
+            map_container.mouseUp(e);
+        };
+    
+    });
+    app.stage.on('touchendoutside', (e) => {
+        e.preventDefault();
+        if (e.touches !== undefined && e.touches.length == 1){
+            map_container.touchEnd(e);
+        } else {
+            map_container.mouseUp(e);
+        };
+    });
+    app.stage.on('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches !== undefined && e.touches.length == 1){
+            map_container.touchMove(e);
+        } else {
+            map_container.mouseMove(e);
+        };
+    });
 
     setInterval(refreshNotifications, 20);
     setInterval(refreshWebsocket, 1000);

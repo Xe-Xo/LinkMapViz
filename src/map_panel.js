@@ -239,7 +239,7 @@ class MapPanel {
     touchStart(event){
         console.log("Touch Start");
 
-        if (e.touches.length == 1){
+        if (event.touches.length == 1){
 
             this.dragging = true;
             const touch = e.touches[0];
@@ -260,6 +260,8 @@ class MapPanel {
     }
 
     touchMove(event){
+
+        console.log(event)
         if(this.dragging && event.touches.length == 1){
             console.log("Touch Move");
             const touch = e.touches[0]
