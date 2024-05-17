@@ -5,7 +5,7 @@ import {
     Point,
 } from 'pixi.js';
 
-const time_to_live = 120000; // ms
+const time_to_live = 30000; // ms
 
 
 class PosSeen{
