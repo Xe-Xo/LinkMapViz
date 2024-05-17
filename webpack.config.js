@@ -27,7 +27,8 @@ const CopyPlugin = require("copy-webpack-plugin");
       new CopyPlugin({
         patterns: [
           { from: "src/assets", to: "assets" },
-          { from: path.resolve(__dirname, "src/index.html")}
+          { from: path.resolve(__dirname, "src/index.html")},
+          { from: path.resolve(__dirname, "src/_config.yml")}
         ],
       }),
     //new HtmlWebpackPlugin()
