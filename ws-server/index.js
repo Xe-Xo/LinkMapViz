@@ -43,12 +43,12 @@ app.ws('/broadcast', function(ws, req){
   ws.on('message', function(message) {
     console.log('Broadcasting: %s', message);
     receivers.forEach(receiver => {
-      if (receiver.readyState === WebSocket.OPEN) {
+      //if (receiver.readyState === WebSocket.OPEN) {
         receiver.send(message);
         if (last16Messages.length >= 16) {
-          last16Messages.splice(0, 1)
+          last16Messages.splice(0, 1);
         }
-        last16Messages.push(message)
+        last16Messages.push(message);
       //}
     });
   });
