@@ -12,6 +12,8 @@ var options = {
 const broadcasters = new Set();
 const receivers = new Set();
 
+const last16Messages = [];
+
 var app = express();
 var server = https.createServer(options, app);
 var expressWs = expressWs(app, server);
@@ -41,8 +43,12 @@ app.ws('/broadcast', function(ws, req){
   ws.on('message', function(message) {
     console.log('Broadcasting: %s', message);
     receivers.forEach(receiver => {
-      //if (receiver.readyState === WebSocket.OPEN) {
-      receiver.send(message);
+      if (receiver.readyState === WebSocket.OPEN) {
+        receiver.send(message);
+        if (last16Messages.length >= 16) {
+          last16Messages.splice(0, 1)
+        }
+        last16Messages.push(message)
       //}
     });
   });
@@ -57,7 +63,9 @@ app.ws('/broadcast', function(ws, req){
 app.ws('/receive', function(ws, req) {
   receivers.add(ws);
   console.log('A new receiver connected.');
-  receiver.send("Hello");
+  for (let i = 0; i < last16Messages.length; i++) {
+    ws.send(last16Messages[i]);
+  }
 
   ws.on('close', () => {
     receivers.delete(ws);
